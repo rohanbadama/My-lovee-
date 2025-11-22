@@ -27,11 +27,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  position: relative;
 }
 
 #headlineBox {
   padding: 15px 25px;
-  border-radius: 15px;
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
@@ -46,15 +46,20 @@ body {
   font-size: 1.3rem;
   color: #ff4d99;
   line-height: 1.6;
+  transition: all 0.5s ease;
 }
 
-.heart {
+.emojiHeart {
   position: absolute;
-  width: 18px;
-  height: 18px;
-  background: url('https://i.imgur.com/O6U7K6H.png') no-repeat center center / cover;
+  font-size: 24px;
   pointer-events: none;
   opacity: 0.8;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) scale(1.2); opacity: 0; }
 }
 </style>
 </head>
@@ -64,12 +69,12 @@ body {
   <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
 </audio>
 
-<div id="headlineBox">Tap me sweetheart 💖</div>
-<div id="messageBox"></div>
+<div id="headlineBox">I want to tell you something.....</div>
+<div id="messageBox">Just tap and read, then tap and read until end. ❤️</div>
 
 <script>
 const messages = [
-  {headline: "Tap me sweetheart 💖", message: ""},
+  {headline: "I want to tell you something.....", message:"Just tap and read, then tap and read until end. ❤️"},
   {headline: "Why She’s Special to You", message:"You’re not just another person in my life… you’re the one who feels meant for me. Something in you fits perfectly in places I didn’t even know were empty."},
   {headline: "Why She’s Important", message:"You matter to me in ways I can’t replace. My day feels incomplete if even a single moment passes without you in it."},
   {headline: "Why Only She Stands Out", message:"Other people exist, but you stand out without trying. Your presence has a purity and peace no one else carries."},
@@ -94,31 +99,25 @@ function nextMessage() {
     index++;
     headlineBox.textContent = messages[index].headline;
     messageBox.textContent = messages[index].message;
-    headlineBox.style.background = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*180)},${Math.floor(Math.random()*200)},0.3)`;
+    headlineBox.style.background = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*180)},${Math.floor(Math.random()*200)},0.2)`;
   }
 }
 document.body.addEventListener('click', nextMessage);
 
-// Simple particle
-function createHeart(){
-  const heart = document.createElement('div');
-  heart.className = 'heart';
-  heart.style.left = Math.random()*100 + 'vw';
-  heart.style.top = Math.random()*100 + 'vh';
-  const x = (Math.random()*100-50) + 'px';
-  const y = (Math.random()*100-50) + 'px';
-  heart.animate([
-    {transform: `translate(0,0)`, opacity:1},
-    {transform: `translate(${x},${y})`, opacity:0}
-  ], {
-    duration: Math.random()*3000 + 3000,
-    iterations: 1,
-    easing: 'ease-out'
-  });
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(), 6000);
+// Animated heart emojis
+function createEmojiHeart() {
+  const emoji = document.createElement('div');
+  emoji.className = 'emojiHeart';
+  emoji.textContent = '❤️';
+  emoji.style.left = Math.random()*100 + 'vw';
+  emoji.style.fontSize = (16 + Math.random()*16) + 'px';
+  emoji.style.animationDuration = (3 + Math.random()*2) + 's';
+  document.body.appendChild(emoji);
+  setTimeout(()=> emoji.remove(), 5000);
 }
-setInterval(createHeart, 600); // slower for smooth mobile rendering
+
+// Generate emoji hearts every 400ms
+setInterval(createEmojiHeart, 400);
 </script>
 
 </body>
