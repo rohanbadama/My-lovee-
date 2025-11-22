@@ -16,6 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  position: relative;
 }
 
 #headlineBox {
@@ -37,13 +38,40 @@ body {
   line-height: 1.6;
 }
 
+/* Heart shape */
 .heart {
   position: absolute;
-  width: 18px;
-  height: 18px;
-  background: url('https://i.imgur.com/O6U7K6H.png') no-repeat center center / cover;
-  pointer-events: none;
+  width: 15px;
+  height: 15px;
+  background-color: #ff4d99;
+  transform: rotate(-45deg);
+  animation: float 5s linear infinite;
   opacity: 0.8;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: #ff4d99;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -7.5px;
+  left: 0;
+}
+
+.heart::after {
+  left: 7.5px;
+  top: 0;
+}
+
+@keyframes float {
+  0% { transform: translate(0,0) rotate(-45deg); opacity:1; }
+  100% { transform: translate(0,-150px) rotate(-45deg); opacity:0; }
 }
 </style>
 </head>
@@ -88,26 +116,19 @@ function nextMessage() {
 }
 document.body.addEventListener('click', nextMessage);
 
-// Simple particle
-function createHeart(){
+// Create hearts
+function createHeart() {
   const heart = document.createElement('div');
   heart.className = 'heart';
   heart.style.left = Math.random()*100 + 'vw';
   heart.style.top = Math.random()*100 + 'vh';
-  const x = (Math.random()*100-50) + 'px';
-  const y = (Math.random()*100-50) + 'px';
-  heart.animate([
-    {transform: `translate(0,0)`, opacity:1},
-    {transform: `translate(${x},${y})`, opacity:0}
-  ], {
-    duration: Math.random()*3000 + 3000,
-    iterations: 1,
-    easing: 'ease-out'
-  });
+  heart.style.animationDuration = (Math.random()*3 + 3) + 's';
   document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(), 6000);
+  setTimeout(() => heart.remove(), 6000);
 }
-setInterval(createHeart, 600); // slower for smooth mobile rendering
+
+// Generate hearts every 500ms
+setInterval(createHeart, 500);
 </script>
 
 </body>
